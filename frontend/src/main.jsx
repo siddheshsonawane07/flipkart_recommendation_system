@@ -1,4 +1,3 @@
-
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
@@ -18,57 +17,57 @@ import Login001 from "./components/Login/Login001";
 import Login from "./components/Login/Login.jsx";
 import Register01 from "./components/Login/Register01.jsx";
 
-const appRouter = createBrowserRouter([
-  {
-    path: "/login",
-    element: <Login/>,
-  },
-  {
-    path: "/register",
-    element: <Register01/>,
-  },
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <Error />,
-    children: [
-      {
-        path: "/",
-        element: <Body />,
-      },
+// const appRouter = createBrowserRouter([
+//   {
+//     path: "/login",
+//     element: <Login />,
+//   },
+//   {
+//     path: "/register",
+//     element: <Register01 />,
+//   },
+//   {
+//     path: "/",
+//     element: <App />,
+//     errorElement: <Error />,
+//     children: [
+//       {
+//         path: "/",
+//         element: <Body />,
+//       },
 
-      {
-        path: "/account",
-        element: <Account />,
-      },
-      {
-        path: "/allproducts",
-        element: <AllProducts />,
-      },
-      {
-        path: "/more",
-        element: <More />,
-      },
-      {
-        path: "/cart",
-        element: <Cart />,
-      },
-      {
-        path: "/singleproduct/:id",
-        element: <SingleProduct />,
-      },
-     
-    ],
-  },
- 
-]);
+//       {
+//         path: "/account",
+//         element: <Account />,
+//       },
+//       {
+//         path: "/allproducts",
+//         element: <AllProducts />,
+//       },
+//       {
+//         path: "/more",
+//         element: <More />,
+//       },
+//       {
+//         path: "/cart",
+//         element: <Cart />,
+//       },
+//       {
+//         path: "/singleproduct/:id",
+//         element: <SingleProduct />,
+//       },
+//     ],
+//   },
+// ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <AppProvider>
-    <FilterContextProvider>
-      <CartProvider>
-        <RouterProvider router={appRouter} />
-      </CartProvider>
-    </FilterContextProvider>
-  </AppProvider>
+  // <AppProvider>
+  //   <FilterContextProvider>
+  //     <CartProvider>
+  //       <RouterProvider router={appRouter} />
+  //     </CartProvider>
+  //   </FilterContextProvider>
+  // </AppProvider>
+
+  <App />
 );

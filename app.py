@@ -1,22 +1,22 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pandas as pd
-import numpy as np
 import time
 import datetime
-import random
+
 app = Flask(__name__)
+CORS(app)
 
 class Recommender:
     def __init__(self):
-        self.orderHistory = pd.read_csv("csv/orderhistory.csv")
-        self.browseHistory = pd.read_csv("csv/browsehistory.csv")
+        self.orderHistory = pd.read_csv("csv/orderHistory.csv")
+        self.browseHistory = pd.read_csv("csv/browseHistory.csv")
         self.products = pd.read_csv("csv/products.csv")
         self.correlationData = pd.read_csv("csv/correlationData.csv")
     
     def getProductRecommendation(self, userId):
         try:
             start_time = time.time()
-                        
             userOrders = self.orderHistory[self.orderHistory['uid'] == userId]
             print(userOrders)
             print(f"Fetched user orders in {time.time() - start_time} seconds")
@@ -29,13 +29,11 @@ class Recommender:
             products.columns = ['pid', 'product_name', 'price', 'brand']
             
             if userOrders.empty and browseHistory.empty:
-                # If the user has no orders or browse history, recommend random products
                 sampleProducts = products.sample(n=20)
                 return sampleProducts.values.tolist()
             
             start_time = time.time()
             
-            # Adjust product correlation data based on user orders
             for i in range(len(userOrders)):
                 pid = userOrders.iloc[i]['pid']
                 productCorrelationData.loc[productCorrelationData['pid'] == pid, 'price'] *= userOrders.iloc[i]['quantity']
@@ -44,7 +42,6 @@ class Recommender:
             
             start_time = time.time()
             
-            # Adjust product correlation data based on browse history
             browseHistory = browseHistory.sort_values(by='date', ascending=False)
             browseHistory = browseHistory.drop_duplicates(subset='pid', keep='first')
             
@@ -57,21 +54,16 @@ class Recommender:
             print(f"Adjusted product correlation data based on browse history in {time.time() - start_time} seconds")
             
             start_time = time.time()
-            
-            # Generate sample products
             sampleProducts = products.sample(n=20)
                 
             print(f"Generated sample products in {time.time() - start_time} seconds")
             
             start_time = time.time()
-            
-            # Calculate scores for products
             productScores = {}
             for index, row in productCorrelationData.iterrows():
-                score = row['price'] * row['name']  # You may need to adjust this based on your correlation data structure
+                score = row['price'] * row['name']  # Adjust based on your correlation data structure
                 productScores[row['pid']] = score
                 
-            # Sort products by score and select top 20
             topProducts = sorted(productScores, key=productScores.get, reverse=True)[:20]
             recommendedProducts = products[products['pid'].isin(topProducts)]
             
@@ -95,15 +87,21 @@ def recommend(userId):
 def log_interaction():
     try:
         data = request.json
+        
+        required_fields = ['oid', 'uid', 'product_name', 'pid', 'price', 'brand']
+        missing_fields = [field for field in required_fields if field not in data]
+        if missing_fields:
+            return jsonify({"message": f"Missing fields: {', '.join(missing_fields)}"}), 400
+        
         # Load existing order history CSV
-        order_history = pd.read_csv("csv/orderhistory.csv")
+        order_history = pd.read_csv("csv/orderHistory.csv")
         
         # Create a DataFrame from the interaction data
         interaction_data = pd.DataFrame([{
             'oid': data.get('oid'),
             'uid': data.get('uid'),
             'date': pd.Timestamp.now().strftime('%d-%m-%Y'),  # Format date without time
-            'product_name': data.get('product_name'),  # Since you mentioned to ignore product_name, let's assume it will be added later if needed.
+            'product_name': data.get('product_name'),
             'pid': data.get('pid'),
             'price': data.get('price'),
             'brand': data.get('brand')
@@ -117,6 +115,7 @@ def log_interaction():
         
         return jsonify({"message": "Interaction logged successfully"})
     except Exception as e:
+        print(f"Error: {str(e)}")
         return jsonify({"message": f"Error: {str(e)}"}), 500
 
 if __name__ == '__main__':
