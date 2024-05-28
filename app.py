@@ -19,14 +19,15 @@ class Recommender:
         try:
             start_time = time.time()
             
-            userOrders = self.orderHistory[self.orderHistory['userId'] == userId]
+            userOrders = self.orderHistory[self.orderHistory['uid'] == userId]
+            print(userOrders)
             print(f"Fetched user orders in {time.time() - start_time} seconds")
             
-            browseHistory = self.browseHistory[self.browseHistory['userId'] == userId]
+            browseHistory = self.browseHistory[self.browseHistory['uid'] == userId]
             productCorrelationData = self.correlationData.copy()
             
             products = self.products.copy()
-            products.columns = ['productId', 'productTitle', 'productImageUrl', 'productUrl', 'brand']
+            products.columns = ['productId', 'productTitle', 'productPrice', 'brand']
             
             if len(userOrders) == 0 and len(browseHistory) == 0:
                 sampleProducts = products.sample(n=20)
