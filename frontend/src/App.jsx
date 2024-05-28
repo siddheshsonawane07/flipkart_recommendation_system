@@ -1,22 +1,35 @@
-import './App.css';
-import Header from './components/Header';
-// import Body from './components/Body';
-import Footer from './components/Footer';
-import { Outlet } from 'react-router-dom';
+// import './App.css';
+// import Header from './components/Header';
+// // import Body from './components/Body';
+// import Footer from './components/Footer';
+// import { Outlet } from 'react-router-dom';
 
+// function App() {
 
+//   return (
+//    <div className='scrollbar-hide overflow-hidden'>
+//    <Header/>
+//    <Outlet/>
+//    <Footer/>
+//    </div>
 
+//   );
+// }
 
-function App() {
-  
+// export default App;
+
+import React from "react";
+import Recommendation from "./temp";
+
+const App = () => {
+  const userId = "1"; 
+
   return (
-   <div className='scrollbar-hide overflow-hidden'>
-   <Header/>
-   <Outlet/>
-   <Footer/>
-   </div>
-
+    <div className="App">
+      <h1>Product Recommendations</h1>
+      <Recommendation userId={userId} />
+    </div>
   );
-}
+};
 
 export default App;
