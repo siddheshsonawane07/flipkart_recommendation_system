@@ -92,7 +92,6 @@ def recommend(userId):
 
 
 @app.route('/log_interaction', methods=['POST'])
-@app.route('/log_interaction', methods=['POST'])
 def log_interaction():
     try:
         data = request.json
@@ -103,8 +102,8 @@ def log_interaction():
         interaction_data = pd.DataFrame([{
             'oid': data.get('oid'),
             'uid': data.get('uid'),
-            'date': pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'product_name': '',  # Since you mentioned to ignore product_name, let's assume it will be added later if needed.
+            'date': pd.Timestamp.now().strftime('%d-%m-%Y'),  # Format date without time
+            'product_name': data.get('product_name'),  # Since you mentioned to ignore product_name, let's assume it will be added later if needed.
             'pid': data.get('pid'),
             'price': data.get('price'),
             'brand': data.get('brand')

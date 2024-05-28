@@ -5,14 +5,27 @@ function App() {
   const [userId, setUserId] = useState("");
   const [orderId, setOrderId] = useState("");
   const [productId, setProductId] = useState("");
+  const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
   const [brand, setBrand] = useState("");
 
+  const getCurrentDate = () => {
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   const handleLogInteraction = async (e) => {
     e.preventDefault();
+    const currentDate = getCurrentDate();
+
     const interactionData = {
       oid: orderId,
       uid: userId,
+      date: currentDate,
+      productName: productName,
       pid: productId,
       price: price,
       brand: brand,
@@ -30,6 +43,7 @@ function App() {
       setProductId("");
       setPrice("");
       setBrand("");
+      setProductName("");
     } catch (error) {
       console.error("Error logging interaction:", error);
     }
@@ -44,6 +58,14 @@ function App() {
           type="text"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Product Name:</label>
+        <input
+          type="text"
+          value={productName}
+          onChange={(e) => setProductName(e.target.value)}
         />
       </div>
       <div>
