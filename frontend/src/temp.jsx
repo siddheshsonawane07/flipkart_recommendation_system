@@ -1,38 +1,86 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-const Recommendation = ({ userId }) => {
-  const [recommendations, setRecommendations] = useState([]);
+function App() {
+  const [userId, setUserId] = useState("");
+  const [orderId, setOrderId] = useState("");
+  const [productId, setProductId] = useState("");
+  const [price, setPrice] = useState("");
+  const [brand, setBrand] = useState("");
 
-  useEffect(() => {
-    const fetchRecommendations = async () => {
-      try {
-        const response = await axios.get(
-          `http://127.0.0.1:5000//recommend/${userId}`
-        );
-        setRecommendations(response.data);
-      } catch (error) {
-        console.error("Error fetching recommendations:", error);
-      }
+  const handleLogInteraction = async (e) => {
+    e.preventDefault();
+    const interactionData = {
+      oid: orderId,
+      uid: userId,
+      pid: productId,
+      price: price,
+      brand: brand,
     };
 
-    fetchRecommendations();
-  }, [userId]);
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:5000/log_interaction",
+        interactionData
+      );
+      console.log(response.data.message);
+      // Reset form fields after successful logging
+      setUserId("");
+      setOrderId("");
+      setProductId("");
+      setPrice("");
+      setBrand("");
+    } catch (error) {
+      console.error("Error logging interaction:", error);
+    }
+  };
 
   return (
     <div>
-      <h1>Recommendations for User {userId}</h1>
-      <ul>
-        {recommendations.map((product, index) => (
-          <li key={index}>
-            <h2>{product[1]}</h2>
-            <img src={product[2]} alt={product[1]} />
-            <p>{product[3]}</p>
-          </li>
-        ))}
-      </ul>
+      <h1>User Interaction Logger</h1>
+      <div>
+        <label>User ID:</label>
+        <input
+          type="text"
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Order ID:</label>
+        <input
+          type="text"
+          value={orderId}
+          onChange={(e) => setOrderId(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Product ID:</label>
+        <input
+          type="text"
+          value={productId}
+          onChange={(e) => setProductId(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Price:</label>
+        <input
+          type="text"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Brand:</label>
+        <input
+          type="text"
+          value={brand}
+          onChange={(e) => setBrand(e.target.value)}
+        />
+      </div>
+      <button onClick={handleLogInteraction}>Log Interaction</button>
     </div>
   );
-};
+}
 
-export default Recommendation;
+export default App;

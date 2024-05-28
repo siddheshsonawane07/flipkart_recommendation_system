@@ -22,12 +22,12 @@ import React from "react";
 import Recommendation from "./temp";
 
 const App = () => {
-  const userId = "1"; 
+  const userId = "1829";
 
   return (
     <div className="App">
       <h1>Product Recommendations</h1>
-      <Recommendation userId={userId} />
+      <Recommendation />
     </div>
   );
 };
