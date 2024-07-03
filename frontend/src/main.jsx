@@ -16,7 +16,6 @@ import { CartProvider } from "./context/CartContext";
 import Login001 from "./components/Login/Login001";
 import Login from "./components/Login/Login.jsx";
 import Register01 from "./components/Login/Register01.jsx";
-
 // const appRouter = createBrowserRouter([
 //   {
 //     path: "/login",
