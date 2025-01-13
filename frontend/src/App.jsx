@@ -22,6 +22,7 @@ import React, { Component } from "react";
 import { Router, Route, Routes } from "react-router-dom";
 import Temp from "./Temp";
 import Temp2 from "./Temp2";
+import RecommendationSystem from "./Temp3";
 
 class App extends Component {
   render() {
@@ -35,7 +36,7 @@ class App extends Component {
           </Routes>
         </Router> */}
 
-        <Temp />
+        <RecommendationSystem />
         <br />
         <br />
         <br />
@@ -44,7 +45,7 @@ class App extends Component {
         <br />
         <br />
         <br />
-        <Temp2 userId={80000} />
+        {/* <Temp2 userId={1829} /> */}
       </div>
     );
   }
